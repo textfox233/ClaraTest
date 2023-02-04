@@ -10,6 +10,7 @@ public class CameraFollow2D : MonoBehaviour
     public Transform camTransform;
     // offset between camera and target
     public Vector3 Offset;
+    public float DistModifier = 1;
     // change this value to get desired smoothness
     public float SmoothTime = 0.3f;
 
@@ -26,7 +27,9 @@ public class CameraFollow2D : MonoBehaviour
     private void LateUpdate()
     {
         // update position
-        Vector3 targetPosition = Target.position + Offset;
+        Vector3 targetPosition = Target.position + (Offset * DistModifier);
         camTransform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, SmoothTime);
     }
+
+
 }

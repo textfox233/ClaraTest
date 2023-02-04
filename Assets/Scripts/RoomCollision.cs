@@ -18,13 +18,24 @@ public class RoomCollision : MonoBehaviour
 
     }
 
-    protected void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         Debug.Log( transform.name + ": Triggered" );
 
-        //GetComponent<CameraFollow2D>().Target = PlayerTransform;
+        // if it's not a doorway, point the camera at it's parent (the room)
+        if (!isDoorway)
+        {
+            GetCameraFocus().FocusRoom(transform.parent);
+        }
+        // otherwise point the camera at the player
+        else
+        {
+            GetCameraFocus().FocusDoorway();
+        }
+    }
 
-        // get the camera to focus on this room
-        transform.parent.GetComponent<RoomManager>().CameraRef.GetComponent<CameraFollow2D>().Target = transform;
+    private FocusShift GetCameraFocus()
+    {
+        return transform.parent.GetComponent<RoomManager>().CameraRef.GetComponent<FocusShift>();
     }
 }

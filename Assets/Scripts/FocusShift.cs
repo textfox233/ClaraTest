@@ -6,59 +6,46 @@ using UnityEngine;
 public class FocusShift : MonoBehaviour
 {
     [SerializeField] private Transform PlayerTransform = null;
-    [SerializeField] private Transform RoomManager = null;
-
-    private int FocusIndex = 0;     // which game object to focus
-
-    private int min, max = 0;
+    [SerializeField] private float PlayerModifier = 1.0f;
+    [SerializeField] private float DoorwayModifier = 1.0f;
+    [SerializeField] private float RoomModifier = 1.0f;
 
     // Start is called before the first frame update
     void Start()
     {
-        max = RoomManager.transform.childCount;
-        Debug.Log(max);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        // change focus target
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            FocusIndex--;
 
-            // clamp to min value
-            if (FocusIndex < min) { FocusIndex = min; }
+    }
 
-            Debug.Log(FocusIndex);
-        }
-        else if (Input.GetKeyDown(KeyCode.E))
-        {
-            FocusIndex++;
+    public void FocusPlayer()
+    {
+        // change zoom
+        GetComponent<CameraFollow2D>().DistModifier = PlayerModifier;
 
-            // clamp to max value
-            if (FocusIndex > max) { FocusIndex = max; }
+        // change target
+        GetComponent<CameraFollow2D>().Target = PlayerTransform;
+    }
 
-            Debug.Log(FocusIndex);
-        }
+    public void FocusDoorway()
+    {
+        // change zoom
+        GetComponent<CameraFollow2D>().DistModifier = DoorwayModifier;
 
-        //// determine focus
-        //switch (FocusIndex)
-        //{
-        //    case 0:
-        //        {
-        //            // change focus
-        //            GetComponent<CameraFollow2D>().Target = PlayerTransform;
-        //            break;
-        //        }
-        //    default:
-        //        {
-        //            // change focus
-        //            GetComponent<CameraFollow2D>().Target = RoomManager.GetChild(FocusIndex - 1);
-        //            break;
-        //        }
-        //}
+        // change target
+        GetComponent<CameraFollow2D>().Target = PlayerTransform;
+    }
 
+    public void FocusRoom(Transform room)
+    {
+        // change zoom
+        GetComponent<CameraFollow2D>().DistModifier = RoomModifier;
 
+        // change target
+        GetComponent<CameraFollow2D>().Target = room;
     }
 }
