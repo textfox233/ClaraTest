@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -11,12 +12,16 @@ public class Player : MonoBehaviour
     [SerializeField] private float superJumpModifier;
     [SerializeField] private float moveSpeed;
 
-    private bool jumpKeyPressed;
+    private bool interactKeyPressed;
     private float horizontalInput;
     private Rigidbody rigidBody;
     private int superJumpsRemaining;
 
     private Transform CurrentRoom;
+
+    // timer to handle interactions - While active script will look for interactions
+    private float timer = 0.0f;
+    private float interactTimer = .1f; // time in seconds
 
     // Start is called before the first frame update
     void Start()
@@ -31,7 +36,7 @@ public class Player : MonoBehaviour
         // Check if space key is pressed down
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            jumpKeyPressed = true;
+            interactKeyPressed = true;
         }
 
 
@@ -44,25 +49,23 @@ public class Player : MonoBehaviour
         // Sideways movement
         rigidBody.velocity = new Vector3(horizontalInput * moveSpeed, rigidBody.velocity.y, 0);
 
-        // should jump be possible? overlapping with anything?
-        if (Physics.OverlapSphere(GroundCheckTransform.position, 0.1f, playerMask).Length == 0)
-        {
-            //return;
-        }
 
-        // Jumping movement
-        else if (jumpKeyPressed)
+        timer += Time.deltaTime;
+
+        // Check if we have reached beyond half a second.
+        if (timer > interactTimer)
         {
-            float jumpForce = jumpHeight;
-            if (superJumpsRemaining > 0) 
-            {
-                jumpForce *= superJumpModifier;
-                superJumpsRemaining--;
-            }
-            rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
+            // Remove the recorded 2 seconds.
+            timer = timer - interactTimer;
+        
+            Debug.Log("Times Up");
+
+            // time's up, interaction lost
+            interactKeyPressed = false;
         }
-        jumpKeyPressed = false;
     }
+
+    // Collision Events //
 
     private void OnTriggerEnter(Collider other)
     {
@@ -72,5 +75,41 @@ public class Player : MonoBehaviour
             Destroy(other.gameObject);
             superJumpsRemaining++;
         }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        Debug.Log("OnCollisionStay triggered: " + other.name);
+
+        if (other.tag == "Stairs")
+        {
+            Debug.Log("Stairs here");
+
+            // Stairs movement
+            if (interactKeyPressed)
+            {
+                Debug.Log("Going upstairs");
+
+                // teleport upstairs
+                Vector3 NewPos = Vector3.zero;
+                NewPos.y = 3.0f;
+
+                Debug.Log(transform.position);
+                Debug.Log(NewPos);
+
+                // up or down?
+                if (other.GetComponent<Stairs>().IsUp())
+                {
+                    transform.position += NewPos;
+                }
+                else 
+                {
+                    transform.position -= NewPos;
+                }
+
+                Debug.Log(transform.position);
+            }
+        }
+        interactKeyPressed = false;
     }
 }
