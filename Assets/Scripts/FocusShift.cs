@@ -42,22 +42,22 @@ public class FocusShift : MonoBehaviour
             Debug.Log(FocusIndex);
         }
 
-        // determine focus
-        switch (FocusIndex)
-        {
-            case 0:
-                {
-                    // change focus
-                    GetComponent<CameraFollow2D>().Target = PlayerTransform;
-                    break;
-                }
-            default:
-                {
-                    // change focus
-                    GetComponent<CameraFollow2D>().Target = RoomManager.GetChild(FocusIndex - 1);
-                    break;
-                }
-        }
+        //// determine focus
+        //switch (FocusIndex)
+        //{
+        //    case 0:
+        //        {
+        //            // change focus
+        //            GetComponent<CameraFollow2D>().Target = PlayerTransform;
+        //            break;
+        //        }
+        //    default:
+        //        {
+        //            // change focus
+        //            GetComponent<CameraFollow2D>().Target = RoomManager.GetChild(FocusIndex - 1);
+        //            break;
+        //        }
+        //}
 
 
     }
