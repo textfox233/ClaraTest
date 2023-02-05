@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RoomManager : MonoBehaviour
+public class Room : MonoBehaviour
 {
     [SerializeField] public Transform CameraRef = null;
 
@@ -17,9 +17,4 @@ public class RoomManager : MonoBehaviour
     {
         
     }
-
-    //Transform GetCamera()
-    //{
-    //    return CameraRef;
-    //}
 }

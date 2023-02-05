@@ -94,8 +94,8 @@ public class Player : MonoBehaviour
                 Vector3 NewPos = Vector3.zero;
                 NewPos.y = 3.0f;
 
-                Debug.Log(transform.position);
-                Debug.Log(NewPos);
+                Debug.Log("Current Position: " + transform.position);
+                Debug.Log("NewPos: " + NewPos);
 
                 // up or down?
                 if (other.GetComponent<Stairs>().IsUp())
@@ -107,9 +107,10 @@ public class Player : MonoBehaviour
                     transform.position -= NewPos;
                 }
 
-                Debug.Log(transform.position);
+                Debug.Log("New Position: " + transform.position);
+
+                interactKeyPressed = false;
             }
         }
-        interactKeyPressed = false;
     }
 }

@@ -22,10 +22,10 @@ public class RoomCollision : MonoBehaviour
     {
         Debug.Log( transform.name + ": Triggered" );
 
-        // if it's not a doorway, point the camera at it's parent (the room)
+        // if it's not a doorway, point the camera at itself (the room volume)
         if (!isDoorway)
         {
-            GetCameraFocus().FocusRoom(transform.parent);
+            GetCameraFocus().FocusRoom(transform);
         }
         // otherwise point the camera at the player
         else
@@ -36,6 +36,6 @@ public class RoomCollision : MonoBehaviour
 
     private FocusShift GetCameraFocus()
     {
-        return transform.parent.GetComponent<RoomManager>().CameraRef.GetComponent<FocusShift>();
+        return transform.parent.GetComponent<Room>().CameraRef.GetComponent<FocusShift>();
     }
 }
