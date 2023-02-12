@@ -1,21 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.UIElements;
+//using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private Transform GroundCheckTransform = null;
+    //[SerializeField] private Transform GroundCheckTransform = null;
     [SerializeField] private LayerMask playerMask;
-    [SerializeField] private float jumpHeight;
-    [SerializeField] private float superJumpModifier;
     [SerializeField] private float moveSpeed;
+
+    [SerializeField] private GameObject DialogueBox = null; // TEST
+    [SerializeField] private GameObject UI = null; // TEST
 
     private bool interactKeyPressed;
     private float horizontalInput;
     private Rigidbody rigidBody;
-    private int superJumpsRemaining;
 
     private Transform CurrentRoom;
 
@@ -27,7 +27,6 @@ public class Player : MonoBehaviour
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
-        superJumpsRemaining = 0;
     }
 
     // Update is called once per frame - keep input checks here (risk missing input in fixed update)
@@ -38,7 +37,6 @@ public class Player : MonoBehaviour
         {
             interactKeyPressed = true;
         }
-
 
         horizontalInput = Input.GetAxis("Horizontal");
     }
@@ -67,16 +65,7 @@ public class Player : MonoBehaviour
 
     // Collision Events //
 
-    private void OnTriggerEnter(Collider other)
-    {
-        // destroy the object if it's a coin
-        if (other.gameObject.layer == 6)
-        {
-            Destroy(other.gameObject);
-            superJumpsRemaining++;
-        }
-    }
-
+    // stairs
     private void OnTriggerStay(Collider other)
     {
         Debug.Log("OnCollisionStay triggered: " + other.name);
@@ -92,7 +81,7 @@ public class Player : MonoBehaviour
 
                 // teleport upstairs
                 Vector3 NewPos = Vector3.zero;
-                NewPos.y = 3.0f;
+                NewPos.y = 4.0f;
 
                 Debug.Log("Current Position: " + transform.position);
                 Debug.Log("NewPos: " + NewPos);
